@@ -1,19 +1,23 @@
 # Virtual environment
 .venv/
 
-# VS Code settings
+# VS Code
 .vscode/
 
-# Python cache files
+# Python cache
 __pycache__/
 *.pyc
 
-# Model files (ignore ALL .h5 or keras or weight files)
+# Ignore all model files...
 *.h5
-*.keras
+# ...BUT keep this specific weights file tracked:
+!mask_weights.weights.h5
+
+# SavedModel folders
+saved_model/
 
 # Uploaded user images
 static/uploads/
 
-# System files
+# System
 .DS_Store
