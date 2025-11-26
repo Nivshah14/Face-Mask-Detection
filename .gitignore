@@ -1,6 +1,19 @@
-.venv
-new_mobilenet_mask_model_backup.h5
-new_mobilenet_mask_model_updated.h5
-new_mobilenet_mask_model.h5
+# Virtual environment
+.venv/
+
+# VS Code settings
+.vscode/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Model files (ignore ALL .h5 or keras or weight files)
+*.h5
+*.keras
+
+# Uploaded user images
 static/uploads/
-.vscode
+
+# System files
+.DS_Store
