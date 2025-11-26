@@ -1,0 +1,60 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Face Mask Detection</title>
+</head>
+<body>
+    <h2>Upload an Image for Mask Detection</h2>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Check</button>
+    </form>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Face Mask Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-400 to-cyan-400 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+    <h2 class="text-2xl font-bold mb-6">😷 Face Mask Detection</h2>
+    
+    <form action="/predict" method="post" enctype="multipart/form-data" class="space-y-4">
+      <input class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+             file:rounded-full file:border-0 file:text-sm file:font-semibold
+             file:bg-blue-500 file:text-white hover:file:bg-blue-600" 
+             type="file" name="file" id="fileInput" required>
+
+      <img id="preview" class="mt-4 rounded-xl max-h-64 mx-auto hidden" alt="Preview">
+
+      <button type="submit" 
+        class="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition">
+        Check
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+
+    fileInput.addEventListener('change', function(){
+      const file = this.files[0];
+      if(file){
+        preview.style.display = "block";
+        preview.src = URL.createObjectURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
+
+

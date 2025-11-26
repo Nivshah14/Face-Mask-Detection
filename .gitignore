@@ -1,0 +1,6 @@
+.venv
+new_mobilenet_mask_model_backup.h5
+new_mobilenet_mask_model_updated.h5
+new_mobilenet_mask_model.h5
+static/uploads/
+.vscode

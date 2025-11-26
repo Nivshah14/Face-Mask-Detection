@@ -1,0 +1,44 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+    <h2>Prediction: {{ label }}</h2>
+    <img src="{{ user_image }}" width="300">
+    <br><br>
+    <a href="/">Go Back</a>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detection Result</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-green-300 to-teal-300 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+    <h2 class="text-2xl font-bold mb-6">Result</h2>
+    
+    <div class="text-xl font-semibold mb-4 
+      {{ 'text-green-600' if label == 'With Mask' else 'text-red-600' }}">
+      Prediction: {{ label }}
+    </div>
+
+    <img src="{{ user_image }}" alt="Uploaded Image" class="rounded-xl max-h-72 mx-auto mb-6">
+
+    <a href="/" class="w-full inline-block py-2 px-4 bg-gray-800 hover:bg-gray-900 
+                     text-white rounded-lg font-medium transition">
+      🔙 Try Another Image
+    </a>
+  </div>
+</body>
+</html>
+
+
