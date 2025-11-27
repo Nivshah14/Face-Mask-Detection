@@ -70,7 +70,7 @@
 
 
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,redirect,url_for
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
@@ -123,6 +123,58 @@ print("✅ Model architecture built and weights loaded successfully.")
 def home():
     return render_template("index.html")
 
+@app.route('/predict', methods=['GET','POST'])
+def predict():
+    if request.method == 'GET':
+        # If someone opens /predict directly, send them to home
+        return redirect(url_for('home'))
+    if 'file' not in request.files:
+        return "No file uploaded"
+
+    file = request.files['file']
+    if file.filename == '':
+        return "No file selected"
+
+    filepath = os.path.join("static", file.filename)
+    file.save(filepath)
+
+    # Preprocess image
+    img = image.load_img(filepath, target_size=(224, 224))  # size used while training
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0) / 255.0
+    
+
+    prediction = model.predict(img_array)
+    class_idx = np.argmax(prediction, axis=1)[0]
+
+    label = "With Mask" if class_idx == 0 else "Without Mask"
+
+    return render_template('result.html', label=label, user_image=filepath)
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # @app.route("/predict", methods=["POST"])
 # def predict():
@@ -165,35 +217,3 @@ def home():
 #         confidence=f"{confidence * 100:.2f}",
 #         user_image=filepath,
 #     )
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    if 'file' not in request.files:
-        return "No file uploaded"
-
-    file = request.files['file']
-    if file.filename == '':
-        return "No file selected"
-
-    filepath = os.path.join("static", file.filename)
-    file.save(filepath)
-
-    # Preprocess image
-    img = image.load_img(filepath, target_size=(224, 224))  # size used while training
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0
-    
-    
-    # img = Image.open(file.stream).convert('RGB')
-    # img = img.resize((224, 224))
-    # img_array = np.array(img) / 255.0
-    # img_array = np.expand_dims(img_array, axis=0)
-
-    prediction = model.predict(img_array)
-    class_idx = np.argmax(prediction, axis=1)[0]
-
-    label = "With Mask" if class_idx == 0 else "Without Mask"
-
-    return render_template('result.html', label=label, user_image=filepath)
-if __name__ == "__main__":
-    app.run(debug=True)
