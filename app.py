@@ -92,7 +92,8 @@ WEIGHTS_PATH = "mask_weights.weights.h5"
 def build_model():
     """Recreate the same architecture used during training."""
     base_model = tf.keras.applications.MobileNetV2(
-        weights="imagenet",
+        # weights="imagenet",
+        weights=None,
         include_top=False,
         input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3),
     )
