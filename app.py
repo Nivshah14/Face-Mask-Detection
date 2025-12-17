@@ -75,7 +75,10 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
-
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["TF_NUM_INTRAOP_THREADS"] = "1"
+os.environ["TF_NUM_INTEROP_THREADS"] = "1"
 app = Flask(__name__)
 
 # ==============================
@@ -86,6 +89,8 @@ IMG_SIZE = (224, 224)
 CLASS_NAMES = ["with_mask", "without_mask"]
 
 WEIGHTS_PATH = "mask_weights.weights.h5"
+
+model = None
 
 def build_model():
     """Recreate the same architecture used during training."""
@@ -108,11 +113,20 @@ def build_model():
     )
     return model
 
+def get_model():
+    """Lazy-load model to avoid Render timeout & OOM"""
+    global model
+    if model is None:
+        print("⏳ Loading model and weights...")
+        model = build_model()
+        model.load_weights(WEIGHTS_PATH)
+        print("✅ Model loaded successfully")
+    return model
 
 # # Build model and load weights (no H5 full-model loading here)
-model = build_model()
-model.load_weights(WEIGHTS_PATH)
-print("✅ Model architecture built and weights loaded successfully.")
+# model = build_model()
+# model.load_weights(WEIGHTS_PATH)
+# print("✅ Model architecture built and weights loaded successfully.")
 
 
 # ==============================
@@ -141,7 +155,7 @@ def predict():
     img = image.load_img(filepath, target_size=(224, 224))  # size used while training
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0) / 255.0
-    
+    model = get_model() 
 
     prediction = model.predict(img_array)
     class_idx = np.argmax(prediction, axis=1)[0]
