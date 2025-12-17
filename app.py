@@ -83,8 +83,6 @@ app = Flask(__name__)
 # ==============================
 IMG_SIZE = (224, 224)
 
-
-
 CLASS_NAMES = ["with_mask", "without_mask"]
 
 WEIGHTS_PATH = "mask_weights.weights.h5"
